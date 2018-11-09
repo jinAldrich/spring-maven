@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+    <!-- 目标对象 -->
+  	<bean id="deptService" class="com.yujin.spring.aop.service.DeptServiceImpl"></bean>
+    <!-- 切面对象 -->
+    <bean id="myAspect" class="com.yujin.spring.aop.MyAspect"></bean>
+    <!-- 切入配置 -->
+    <aop:config>
+    		<!-- 指定切面对象 -->
+    		<aop:aspect id="aspect" ref="myAspect">
+    			<!-- 执行com.yujin.spring.aop.service包下的所有类的所有方法 -->
+    			<aop:pointcut id="myPointCut" expression="execution (* com.yujin.spring.aop.service.*.*(..))"/>
+    			<!-- 定义前置通知 -->
+    			<aop:before pointcut-ref="myPointCut" method="beforeMethod"/>
+    			<!-- 定义环绕通知 -->
+    			<aop:around pointcut-ref="myPointCut" method="aroundMethod"/>
+    			<!-- 定义最终通知 -->
+    			<aop:after pointcut-ref="myPointCut" method="afterMethod"/>
+    			<!-- 定义后置通知 -->
+    			<aop:after-returning pointcut-ref="myPointCut" method="afterReturnMethod"/>
+    		</aop:aspect>
+    </aop:config>
+    
+</beans>

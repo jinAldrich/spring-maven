@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+	<!-- 这儿必须是实现类，接口是不行的，也就是说只能是PersonDAOImpl，不能是PersonDAO，lazy-init延时创建对象-->
+<!-- 	<bean id="personDAO"  class="com.yujin.spring01.PersonDAOJDBCImpl" lazy-init="true"/> -->
+	<bean id="personDAO"  class="com.yujin.spring01.PersonDAOJDBCImpl" init-method="init" destroy-method="destroy" scope="prototype"/>
+<!-- 	<bean id="personDAOHibernate" class="com.yujin.spring01.PersonDAOHibernateImpl"/> -->
+
+	<!-- 利用工厂创建对象 -->
+	<bean id="daoFactory" class="com.yujin.spring01.DAOFactory"/>
+	<bean id="personDAO1" factory-bean="daoFactory"  factory-method="createPersonDAO"/>
+	
+	<!-- 利用工厂静态方法创建对象 -->
+	<bean id="personDAO2" class="com.yujin.spring01.DAOFactory" factory-method="createHibernatePersonDAO"/>
+	
+	<!-- 对象依赖注入 -->
+	<bean id="personAction" class="com.yujin.di.PersonActionImpl">
+		<property name="personDao" ref="personDAO"></property>
+	</bean>
+	
+	
+</beans>
