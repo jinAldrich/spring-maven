@@ -49,5 +49,79 @@ AOP:面向切面编程，是对OOP编程的提升，站在程序结构角度思�
 	} finally {
 		执行最终通知方法
 	}
+	
 
 
+-------------------------AOP注解配置-------------------------
+1、在spring配置中启用AOP注解
+   <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+2、编写切面组件，使用以下注解定义切面、切入点和通知
+	@Service:指定组件
+    @Aspect:将当前类指定为切面组件
+	@Pointcut:定义切入点，是一个方法注解
+	//通知的注解
+	@Around("切入点引用")
+	@Before("切入点引用") 
+	@After("切入点引用") 
+	@AfterReturning(pointcut="切入点", returning="参数名") 
+	@AfterThrowing(pointcut="切入点", returning="参数名")
+
+3、切入点定义常用的表达式
+	·execution表达式： 匹配方法执行的连接点，这是你将会用到的Spring的最主要的切入点指示符。
+		示例：execution（modifiers-pattern? ret-type-pattern declaring-type-pattern? name-pattern（param-pattern）
+	          throws-pattern?）
+   
+	·bean表达式：匹配容器中bean对象的id或name属性值
+		示例：bean(idOrNameOfBean)
+	   		bean(*Service)可以使用通配符，只要以是Service结尾的名字的组件
+   		
+	·within表达式：匹配特定类型
+		示例：within(包名.类名)
+	   		within（com.xyz.service.*）在service包下的所有类型
+	   		within（com.xyz.service..*）在service包下及其子包下的所有类型
+   		
+	·this和target表达式：匹配类型实例的任意连接点，this和target区别：this指代理对象，target指目标对象
+		示例：this(类型),target(类型)，使用this和target对开发者来说效果是一样的，不一样的是指定的对象不一样，一个指向代理对象 ，一个指向目标对象
+			 this("com.xyz.service.AccountService")  实现了AccountService接口的代理对象的任意连接点
+			 target("com.xyz.service.AccountService")实现了AccountService接口的目标对象的任意连接点
+	
+	·args表达式：匹配参数类型的连接点
+		示例：args(参数类型或参数名字)
+		args(java.io.Serializable)
+		
+		
+		
+		
+
+-------------------------spring框架作用-------------------------
+1、spring框架提供了一套完整的企业级解决方案，基于该框架整合现有流行的Struts、Hibernate等框架，降低各层组件之间的耦合。
+
+
+
+
+
+
+-------------------------spring框架对JDBC的支持-------------------------
+1、引入数据库驱动和dbcp连接池的jar包, dbcp:DataBase Connection Pool数据库连接池
+	commons-dbcp.jar, commons-pool.jar, commons-collections.jar
+2、在spring配置文件中添加datasource的定义
+3、编写DAO组件，使用JdbcTemplate工具类
+
+
+
+
+
+-------------------------整合Hibernate-------------------------
+1、引入开发包，Hibernate也是对JDBC的一层封装
+	a.spring基本包：spring.jar commons-logging.jar
+	b.spring aop包：aspectjrt.jar aspectjweaver.jar cglib-nodep-.jar
+	c.数据库驱动包：mysql-connector-jar-5.1.6-bin.jar
+	d.连接池dbcp包：commons-dbcp.jar commons-pool.jar commons-collections.jar
+	e.Hibernate包：hibernate3.jar hibernate-annotations.jar hibernate-common-annotations.jar hibernate-entitymanager.jar
+	f.dom4j开发包：dom4j-1.6.1.jar，解析XML用到的
+	g.slf4j开发包：slf4j-api-1.5.0.jar slf4j-log4j12-1.5.0.jar
+	h.log4j开发包：log4j-1.2.15.jar
+	i.javassist开发包：javassist.jar，修改java字节码的库，修改Class文件，添加方法，删除方法之类的
+	
+
+	

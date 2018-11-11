@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
-
+	
     <!-- 目标对象 -->
   	<bean id="deptService" class="com.yujin.spring.aop.service.DeptServiceImpl"></bean>
     <!-- 切面对象 -->
@@ -15,7 +15,7 @@
     <aop:config>
     		<!-- 指定切面对象 -->
     		<aop:aspect id="aspect" ref="myAspect">
-    			<!-- 执行com.yujin.spring.aop.service包下的所有类的所有方法 -->
+    			<!-- 指定切入点，执行com.yujin.spring.aop.service包下的所有类的所有方法 -->
     			<aop:pointcut id="myPointCut" expression="execution (* com.yujin.spring.aop.service.*.*(..))"/>
     			<!-- 定义前置通知 -->
     			<aop:before pointcut-ref="myPointCut" method="beforeMethod"/>
@@ -26,6 +26,15 @@
     			<!-- 定义后置通知 -->
     			<aop:after-returning pointcut-ref="myPointCut" method="afterReturnMethod"/>
     		</aop:aspect>
+    </aop:config>
+    
+    <bean id="timeHandler" class="com.yujin.spring.aop.TimeHandler"></bean>
+    <aop:config>
+    	<aop:aspect id="timeAspect" ref="timeHandler">
+    		<!-- bean对象的id名字或name名字，以Sevice结尾，spring2.5里开始支持的表达式 -->
+    		<aop:pointcut id="pc" expression="bean(*Service)"/>
+    		<aop:around pointcut-ref="pc" method="handlerTime"/>
+    	</aop:aspect>
     </aop:config>
     
 </beans>
